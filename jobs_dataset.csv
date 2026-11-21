@@ -1,0 +1,31 @@
+job_id,title,required_skills,location,distance_km,shift,duration_hrs,payout_inr
+JOB-101,Urgent Apartment Wiring & Fan Repair,electrical wiring fan repair switchboard,Indiranagar (Near),1.2,Evening,4,950
+JOB-102,Commercial Inverter & MCB Installation,electrical inverter wiring mcb maintenance,Whitefield (Far),18.5,Morning,6,1600
+JOB-103,Kitchen Pipe Leak & Tap Replacement,plumbing pipe fitting tap repair,Koramangala (Near),2.1,Evening,3,800
+JOB-104,Shop Lighting & LED Board Setup,electrical lighting wiring installation,HSR Layout (Near),3.4,Afternoon,4,900
+JOB-105,Bathroom Waterproofing & Plumbing Overhaul,plumbing masonry pipe waterproofing,Yelahanka (Very Far),26.0,Full Day,8,2100
+JOB-106,Evening Grocery Hyperlocal Delivery,bike driving delivery navigation,Domlur (Near),0.9,Evening,4,750
+JOB-107,Night E-Commerce Warehouse Sorting,packing sorting loading warehouse helper,Electronic City (Far),16.2,Night,6,1100
+JOB-108,Tempo Mini-Truck Local Shifting Helper,loading unloading driving helper shifting,Ulsoor (Near),2.8,Morning,5,1050
+JOB-109,Airport Late-Night Cab Relief Driver,car driving commercial license navigation,Devanahalli (Very Far),28.5,Night,8,1900
+JOB-110,Afternoon Pharmacy Express Delivery,bike driving delivery,Indiranagar (Near),1.5,Afternoon,4,650
+JOB-111,Wardrobe Hinge & Door Lock Fixing,carpentry wood repair lock fitting,Jeevanbheemanagar (Near),1.8,Evening,3,850
+JOB-112,2BHK Interior Wall Repainting,painting wall putty primer brushwork,Marathahalli (Medium),8.4,Full Day,8,1500
+JOB-113,Office Modular Desk Assembly,carpentry furniture assembly drilling,MG Road (Near),3.9,Afternoon,5,1150
+JOB-114,Compound Wall Plastering & Brick Work,masonry cement plastering construction,Hebbal (Far),14.7,Morning,7,1400
+JOB-115,Balcony Grill Rust Scraping & Enamel Paint,painting welding metal work,Ejipura (Near),3.1,Morning,4,800
+JOB-116,Evening Banquet Catering Assistant & Server,catering serving food prep hospitality,Indiranagar (Near),1.4,Evening,5,900
+JOB-117,Cloud Kitchen Tandoor & Roti Maker,cooking tandoor kitchen prep,BTM Layout (Medium),6.8,Evening,6,1200
+JOB-118,Morning Breakfast Tiffin Stall Helper,cooking chopping cleaning kitchen helper,Halasuru (Near),2.3,Morning,4,600
+JOB-119,Wedding Event Dishwashing & Kitchen Crew,cleaning kitchen helper catering,Bannerghatta (Far),15.3,Full Day,9,1350
+JOB-120,Split AC Gas Refill & Jet Servicing,ac repair appliance servicing electrical,Cambridge Layout (Near),1.6,Evening,3,1100
+JOB-121,Washing Machine Motor & Drain Fix,appliance repair electrical plumbing,CV Raman Nagar (Near),2.9,Afternoon,3,900
+JOB-122,Apartment Water Tank Cleaning,cleaning plumbing general helper,JP Nagar (Medium),9.5,Morning,4,850
+JOB-123,Garden Pruning & Lawn Maintenance,gardening landscaping cleaning,Sadashivanagar (Medium),10.2,Morning,5,950
+JOB-124,Event Stage & Sound Box Loading Crew,loading helper electrical cable setup,Koramangala (Near),2.5,Evening,5,950
+JOB-125,Retail Store Stock Counting & Shelf Setup,inventory sorting helper cleaning,Commercial Street (Near),4.1,Night,5,850
+JOB-126,Solar Panel Dust Cleaning on Rooftop,cleaning electrical basic maintenance,Bellandur (Medium),7.9,Morning,4,900
+JOB-127,Security Guard Night Shift Replacement,security watchman night duty,Domlur (Near),1.1,Night,8,1000
+JOB-128,2-Wheeler Puncture & Basic Mechanic Help,mechanic bike repair welding,Madiwala (Medium),5.8,Afternoon,5,850
+JOB-129,Office Deep Cleaning & Sofa Shampooing,deep cleaning housekeeping machine handling,MG Road (Near),3.7,Evening,4,920
+JOB-130,Construction Site Bar Bending & Helper,construction masonry heavy lifting,Peenya (Very Far),22.4,Full Day,8,1300
