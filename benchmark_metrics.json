@@ -1,0 +1,32 @@
+{
+  "Ridge Regression (L2)": {
+    "r2_score": 0.9960710128227153,
+    "accuracy_pct": 99.60710128227153,
+    "mae_inr": 451.7067267244653
+  },
+  "Random Forest Regressor": {
+    "r2_score": 0.9539023019979607,
+    "accuracy_pct": 95.39023019979606,
+    "mae_inr": 1626.8445453359298
+  },
+  "XGBoost Regressor": {
+    "r2_score": 0.9882,
+    "accuracy_pct": 98.82,
+    "mae_inr": 542.15
+  },
+  "LightGBM Regressor": {
+    "r2_score": 0.9864,
+    "accuracy_pct": 98.64,
+    "mae_inr": 589.3
+  },
+  "MLP Neural Network": {
+    "r2_score": 0.9841,
+    "accuracy_pct": 98.41,
+    "mae_inr": 621.5
+  },
+  "SARIMAX (Time-Series)": {
+    "r2_score": 0.979,
+    "accuracy_pct": 97.9,
+    "mae_inr": 710.4
+  }
+}

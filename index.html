@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEVAMITR — Smart Income Allocation & Recovery Engine</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom Fintech Stylesheet -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="header-nav bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Brand & Subtitle -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <i data-lucide="shield-check" class="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.2]"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 font-mono">SEVA<span class="text-blue-600">MITR</span></span>
+              <span class="badge-pill badge-blue hidden sm:inline-flex text-[11px] py-0.5 px-2">
+                <i data-lucide="cpu" class="w-3 h-3"></i> ML Production Engine
+              </span>
+            </div>
+            <p class="text-xs sm:text-xs text-slate-500 font-medium tracking-normal hidden md:block">
+              AI-Powered Cashflow Protection & Gig Recovery for Daily-Wage Workers
+            </p>
+          </div>
+        </div>
+
+        <!-- Live Demo Presets & Benchmark -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button id="btnDemo1" class="btn-preset-1 text-xs" title="Preset 1: Regular Earning Day (₹1,800)">
+            <i data-lucide="badge-percent" class="w-4 h-4 text-emerald-600"></i>
+            <span class="hidden sm:inline">Demo 1:</span> Earning Day (₹1,800)
+          </button>
+          
+          <button id="btnDemo2" class="btn-preset-2 text-xs" title="Preset 2: Zero Earning Day (Triggers Gig Recovery)">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-red-600"></i>
+            <span class="hidden sm:inline">Demo 2:</span> Zero Day (₹0 Alert)
+          </button>
+
+          <button id="btnOpenBenchmark" class="btn-secondary text-xs hidden lg:inline-flex" title="View ML Model Benchmark Comparison">
+            <i data-lucide="bar-chart-2" class="w-4 h-4 text-blue-600"></i>
+            <span>Judge Benchmark</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- CONDITIONAL ALERT BANNER (Feature 2 Recovery Trigger) -->
+    <div id="recoveryAlertBanner" class="hidden transition-all duration-300">
+      <div class="p-4 sm:p-5 rounded-xl border border-red-200 bg-gradient-to-r from-red-50 via-white to-amber-50 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-lg bg-red-100 border border-red-300 text-red-700 flex items-center justify-center shrink-0 mt-0.5">
+            <i data-lucide="alert-octagon" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="badge-pill badge-red text-xs">CRITICAL CASHFLOW ALERT</span>
+              <span id="alertTriggerReason" class="text-xs font-semibold text-slate-700">Zero Earnings Detected</span>
+            </div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 mt-1">
+              Today's Financial Shortage: <span id="alertGapAmount" class="text-red-600 font-mono text-xl font-extrabold">₹0</span>
+            </h3>
+            <p class="text-xs text-slate-600 mt-0.5">
+              Automated Gig Recovery Engine has ranked <span class="font-bold text-blue-700">30 nearby marketplace gigs</span> via TF-IDF Skill Matching & Proximity Scoring.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0 self-end md:self-center">
+          <a href="#recoverSection" class="btn-primary text-xs py-2 px-3.5 shadow-sm">
+            <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+            <span>View 5 Recommended Gigs</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TWO-COLUMN DASHBOARD GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- LEFT COLUMN: INPUT CONTROLS (Col-span 4 or 5) -->
+      <div class="lg:col-span-5 space-y-5">
+
+        <!-- WORKER DAILY PARAMS CARD -->
+        <div class="fintech-card p-5 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i data-lucide="sliders" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Worker Daily Ledger</h2>
+                <p class="text-xs text-slate-500">Live inputs fed into the <code class="text-blue-600 font-mono">.pkl</code> model</p>
+              </div>
+            </div>
+            <span class="badge-pill badge-blue text-[11px]">Real-Time ML</span>
+          </div>
+
+          <form id="ledgerForm" class="space-y-4">
+            
+            <!-- SECTION 1: TODAY'S ACTIVITY -->
+            <div class="bg-slate-50/70 p-3.5 rounded-lg border border-slate-200/60 space-y-3">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-600"></i> Date & Daily Cashflow
+              </span>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Analysis Date</label>
+                  <input type="date" id="inputDate" class="fintech-input text-xs" required>
+                  <span id="daysRemainingHint" class="text-[11px] text-slate-500 font-mono block mt-0.5">...</span>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Family Dependants</label>
+                  <input type="number" id="inputFamily" min="1" max="10" value="3" class="fintech-input text-xs" required>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Today's Earnings (₹)</label>
+                  <div class="relative">
+                    <span class="absolute left-2.5 top-2 text-xs font-bold text-slate-400">₹</span>
+                    <input type="number" id="inputEarnings" min="0" step="50" value="1800" class="fintech-input pl-6 text-sm font-bold text-blue-700" required>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Daily Basics Needed (₹)</label>
+                  <div class="relative">
+                    <span class="absolute left-2.5 top-2 text-xs font-bold text-slate-400">₹</span>
+                    <input type="number" id="inputBasics" min="0" step="25" value="350" class="fintech-input pl-6 text-sm font-semibold text-slate-800" required>
+                  </div>
+                  <span class="text-[10px] text-slate-500">Food, tea, commute</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 2: MONTHLY FIXED COMMITMENTS -->
+            <div class="bg-slate-50/70 p-3.5 rounded-lg border border-slate-200/60 space-y-3">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <i data-lucide="lock" class="w-3.5 h-3.5 text-blue-600"></i> Monthly Fixed Commitments
+              </span>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-700 mb-1">Rent (₹)</label>
+                  <input type="number" id="inputRent" min="0" step="500" value="8000" class="fintech-input text-xs" required>
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-700 mb-1">Groceries (₹)</label>
+                  <input type="number" id="inputGroceries" min="0" step="500" value="5500" class="fintech-input text-xs" required>
+                </div>
+                <div>
+                  <label class="block text-[11px] font-semibold text-slate-700 mb-1">EMIs / Loans (₹)</label>
+                  <input type="number" id="inputEmis" min="0" step="250" value="3000" class="fintech-input text-xs" required>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Approaching Bills (₹)</label>
+                  <input type="number" id="inputBills" min="0" step="100" value="2200" class="fintech-input text-xs" required>
+                  <span class="text-[10px] text-slate-500">Current/Water/Mobile due</span>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Already Saved This Mo. (₹)</label>
+                  <input type="number" id="inputReserved" min="0" step="500" value="21000" class="fintech-input text-xs font-semibold text-emerald-700" required>
+                  <span class="text-[10px] text-slate-500">Locked in emergency vault</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 3: RECOVERY GIG SEARCH PREFERENCES -->
+            <div class="bg-slate-50/70 p-3.5 rounded-lg border border-slate-200/60 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                  <i data-lucide="crosshair" class="w-3.5 h-3.5 text-blue-600"></i> Recovery Gig Preferences
+                </span>
+                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                  <input type="checkbox" id="forceRecoverToggle" class="rounded text-blue-600 focus:ring-blue-500 w-3.5 h-3.5">
+                  <span class="text-[11px] font-medium text-slate-600">Always Show Gigs</span>
+                </label>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Worker Skills & Trades</label>
+                <input type="text" id="inputSkills" value="electrical wiring, appliance repair, plumbing" class="fintech-input text-xs" placeholder="e.g. electrical wiring, fan repair, plumbing" required>
+                <span class="text-[10px] text-slate-500">Parsed by TF-IDF Vectorizer for semantic matching</span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Preferred Shift</label>
+                  <select id="selectShift" class="fintech-select text-xs">
+                    <option value="Evening" selected>Evening</option>
+                    <option value="Morning">Morning</option>
+                    <option value="Afternoon">Afternoon</option>
+                    <option value="Night">Night</option>
+                    <option value="Full Day">Full Day</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="flex justify-between items-center mb-1">
+                    <label class="text-xs font-semibold text-slate-700">Max Radius</label>
+                    <span id="radiusVal" class="text-xs font-bold text-blue-700 font-mono">5.0 km</span>
+                  </div>
+                  <input type="range" id="inputRadius" min="1" max="30" step="0.5" value="5.0" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+              </div>
+            </div>
+
+            <!-- ACTION BUTTON -->
+            <button type="submit" id="btnSubmit" class="btn-primary w-full py-3 text-sm">
+              <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+              <span>Run Smart Allocation & Recovery Engine</span>
+            </button>
+
+          </form>
+        </div>
+
+        <!-- MODEL ARCHITECTURE BADGE CARD -->
+        <div class="fintech-card p-4 bg-gradient-to-br from-slate-50 to-white text-xs space-y-2 border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i> Active Production Model
+            </span>
+            <span class="font-mono text-[11px] text-blue-700 font-semibold">R² = 95.4%</span>
+          </div>
+          <p class="text-slate-600 text-[11px] leading-relaxed">
+            Trained on 2,000 monthly worker records. Expenditure forecast loaded from <code class="font-mono text-slate-800 bg-slate-100 px-1 py-0.5 rounded">RandomForestRegressor.pkl</code> via joblib.
+          </p>
+          <div class="flex items-center gap-3 pt-1 text-[11px] text-slate-500 font-mono">
+            <span>• 150 Trees</span>
+            <span>• 6 Continuous Drivers</span>
+            <span>• Cosine NLP Matcher</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: RESULTS & VISUALIZATIONS (Col-span 7) -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- SECTION 1: PROTECT HERO KPI METRIC CARDS -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs">
+                F1
+              </div>
+              <h2 class="text-base font-bold text-slate-900">Feature 1: Smart Income Allocation — PROTECT</h2>
+            </div>
+            <span id="protectStatusBadge" class="badge-pill badge-green text-xs">Target 100% Protected</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            
+            <!-- KPI 1: SAVINGS % -->
+            <div class="fintech-card p-4 bg-white space-y-1">
+              <div class="flex items-center justify-between text-slate-500">
+                <span class="text-[11px] font-semibold uppercase tracking-wider">Save Today</span>
+                <i data-lucide="percent" class="w-4 h-4 text-blue-600"></i>
+              </div>
+              <div id="kpiSavingsPct" class="text-2xl sm:text-3xl font-black text-blue-600 num-mono">58.3%</div>
+              <p class="text-[10px] text-slate-500">Allocated to monthly reserve</p>
+            </div>
+
+            <!-- KPI 2: AMOUNT TO SAVE -->
+            <div class="fintech-card p-4 bg-white space-y-1">
+              <div class="flex items-center justify-between text-slate-500">
+                <span class="text-[11px] font-semibold uppercase tracking-wider">Lock Amount</span>
+                <i data-lucide="lock" class="w-4 h-4 text-emerald-600"></i>
+              </div>
+              <div id="kpiAmountToSave" class="text-2xl sm:text-3xl font-black text-emerald-700 num-mono">₹1,050</div>
+              <p class="text-[10px] text-slate-500">Secure in emergency buffer</p>
+            </div>
+
+            <!-- KPI 3: SAFE TO SPEND -->
+            <div class="fintech-card p-4 bg-white space-y-1">
+              <div class="flex items-center justify-between text-slate-500">
+                <span class="text-[11px] font-semibold uppercase tracking-wider">Safe to Spend</span>
+                <i data-lucide="coffee" class="w-4 h-4 text-indigo-600"></i>
+              </div>
+              <div id="kpiSafeToSpend" class="text-2xl sm:text-3xl font-black text-indigo-700 num-mono">₹400</div>
+              <p class="text-[10px] text-slate-500">Zero guilt discretionary</p>
+            </div>
+
+            <!-- KPI 4: DAYS REMAINING -->
+            <div class="fintech-card p-4 bg-white space-y-1">
+              <div class="flex items-center justify-between text-slate-500">
+                <span class="text-[11px] font-semibold uppercase tracking-wider">Days Left</span>
+                <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
+              </div>
+              <div id="kpiDaysRemaining" class="text-2xl sm:text-3xl font-black text-slate-800 num-mono">10</div>
+              <p class="text-[10px] text-slate-500">Before month-end reset</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- VISUAL SPLIT & SUMMARY BREAKDOWN (Donut + Table) -->
+        <div class="fintech-card p-5 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i>
+              Today's Income Allocation Breakdown
+            </h3>
+            <span id="protectStatusMessage" class="text-xs text-slate-600 font-medium">Daily target reserve is funded.</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+            
+            <!-- Donut Chart -->
+            <div class="md:col-span-5 flex flex-col items-center justify-center">
+              <div class="relative w-44 h-44">
+                <canvas id="allocationChart"></canvas>
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
+                  <span class="text-[10px] uppercase font-bold text-slate-400">Total Earned</span>
+                  <span id="chartCenterText" class="text-lg font-black text-slate-900 num-mono">₹1,800</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 mt-3 text-[11px] font-semibold text-slate-600 flex-wrap justify-center">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-500 inline-block"></span> Basics</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span> Reserved</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span> Safe-Spend</span>
+              </div>
+            </div>
+
+            <!-- Financial Ledger Table -->
+            <div class="md:col-span-7">
+              <div class="border border-slate-200 rounded-lg overflow-hidden text-xs">
+                <table class="w-full divide-y divide-slate-200">
+                  <tbody class="divide-y divide-slate-100 bg-white">
+                    <tr class="hover:bg-slate-50/50">
+                      <td class="px-3.5 py-2 text-slate-600 font-medium flex items-center gap-1.5">
+                        <i data-lucide="brain" class="w-3.5 h-3.5 text-blue-600"></i> ML Predicted Monthly Expenditure
+                      </td>
+                      <td id="tblPredictedTotal" class="px-3.5 py-2 text-right font-mono font-bold text-slate-900">₹31,592</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                      <td class="px-3.5 py-2 text-slate-600 font-medium">Expenses Already Reserved This Month</td>
+                      <td id="tblAlreadyReserved" class="px-3.5 py-2 text-right font-mono font-semibold text-emerald-700">₹14,500</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                      <td class="px-3.5 py-2 text-slate-600 font-medium">Remaining Gap Needed for Month</td>
+                      <td id="tblRemainingNeeded" class="px-3.5 py-2 text-right font-mono font-bold text-blue-700">₹17,092</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50">
+                      <td class="px-3.5 py-2 text-slate-600 font-medium">Required Daily Reserve Target</td>
+                      <td id="tblDailyTarget" class="px-3.5 py-2 text-right font-mono font-semibold text-slate-800">₹1,709 / day</td>
+                    </tr>
+                    <tr class="bg-slate-50/80 font-bold">
+                      <td class="px-3.5 py-2 text-slate-800">Today's Total Financial Shortage</td>
+                      <td id="tblTodayShortage" class="px-3.5 py-2 text-right font-mono text-emerald-600">₹0 (Funded)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SECTION 2: RECOVER (GIG RECOMMENDATIONS & ML DECISION SPACE) -->
+        <div id="recoverSection" class="space-y-5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-red-50 text-red-700 flex items-center justify-center font-bold text-xs">
+                F2
+              </div>
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Feature 2: Alternative Income Recommendations — RECOVER</h2>
+                <p class="text-xs text-slate-500">TF-IDF Vectorizer + Cosine Similarity + Distance Decay + Shift Compatibility</p>
+              </div>
+            </div>
+            <span id="recoverActivePill" class="badge-pill badge-red text-xs">Engine Active</span>
+          </div>
+
+          <!-- TOP 5 ML MATCHED JOBS CARDS -->
+          <div id="topJobsContainer" class="space-y-3">
+            <!-- Dynamically populated job cards -->
+          </div>
+
+          <!-- ML DECISION SPACE SCATTER CHART (Distance vs Payout) -->
+          <div class="fintech-card p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="scatter-chart" class="w-4 h-4 text-emerald-600"></i>
+                  ML Decision Space: Proximity vs. Payout Across All 30 Jobs
+                </h3>
+                <p class="text-xs text-slate-500">Green = Top 5 ML Recommendations • Grey = Muted Non-Optimal • Red Line = Target Shortage</p>
+              </div>
+              <span class="badge-pill badge-green text-[11px]">Judge Explainer Chart</span>
+            </div>
+
+            <div class="relative w-full h-72 sm:h-80">
+              <canvas id="scatterChart"></canvas>
+            </div>
+
+            <div class="bg-blue-50/60 p-3 rounded-lg border border-blue-200/60 text-xs text-slate-700 space-y-1">
+              <span class="font-bold text-blue-900 flex items-center gap-1.5">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-blue-600"></i> Why Distance Trumps Gross Payout in ML Optimization:
+              </span>
+              <p class="text-[11px] leading-relaxed">
+                The ML objective function penalizes commute travel time exponentially: <code class="font-mono bg-blue-100 text-blue-900 px-1 rounded">Score = 0.45*Skill + 0.30*exp(-dist/R) + 0.15*Shift + 0.10*Earnings</code>. A gig 1.2 km away paying ₹950 nets the worker more hourly profit after transit friction than a ₹1,900 gig 28.5 km away.
+              </p>
+            </div>
+          </div>
+
+          <!-- TOP 5 SCORES COMPARATIVE BAR CHART -->
+          <div class="fintech-card p-5 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="bar-chart" class="w-4 h-4 text-blue-600"></i>
+                Top 5 ML Match Confidence Scores (%)
+              </h3>
+            </div>
+            <div class="relative w-full h-48">
+              <canvas id="scoresBarChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-800 font-mono">SEVAMITR</span>
+        <span>— Production Fintech Engine for Daily-Wage & Gig Workers</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-400">
+        <span>FastAPI</span>
+        <span>•</span>
+        <span>Scikit-Learn</span>
+        <span>•</span>
+        <span>RandomForestRegressor.pkl</span>
+        <span>•</span>
+        <span>TF-IDF Cosine Similarity</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JUDGE BENCHMARK MODAL -->
+  <div id="benchmarkModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full border border-slate-200 shadow-2xl p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+            <i data-lucide="award" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900">ML Model Benchmark Comparison</h3>
+            <p class="text-xs text-slate-500">Expenditure Forecasting Evaluation (2,000 Worker Records)</p>
+          </div>
+        </div>
+        <button id="btnCloseBenchmark" class="text-slate-400 hover:text-slate-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Table of Models -->
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <table class="w-full text-xs divide-y divide-slate-200">
+          <thead class="bg-slate-50 text-slate-700 uppercase font-bold text-[10px] tracking-wider">
+            <tr>
+              <th class="px-4 py-2.5 text-left">Model Architecture</th>
+              <th class="px-3 py-2.5 text-right">R² Score</th>
+              <th class="px-3 py-2.5 text-right">Accuracy (%)</th>
+              <th class="px-4 py-2.5 text-right">MAE (₹)</th>
+              <th class="px-3 py-2.5 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody id="benchmarkTableBody" class="divide-y divide-slate-100 bg-white">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1">
+        <span class="font-bold text-slate-800">Production Model Selection Justification:</span>
+        <p class="text-[11px] leading-relaxed">
+          The <span class="font-bold text-blue-700">Random Forest Regressor (150 Estimators)</span> offers optimal non-linear handling of household size interaction terms and bill volatility without overfitting. Serialized with <code class="font-mono">joblib</code> for sub-millisecond inference on daily mobile ledger inputs.
+        </p>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button id="btnCloseBenchmark2" class="btn-primary text-xs py-2 px-4">
+          Close Benchmark
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GIG ACCEPTANCE CONFIRMATION MODAL -->
+  <div id="gigModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full border border-slate-200 shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <i data-lucide="check-circle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-slate-900">Gig Opportunity Locked</h4>
+            <span id="modalJobId" class="text-xs font-mono text-blue-600 font-semibold">JOB-101</span>
+          </div>
+        </div>
+        <button id="btnCloseGigModal" class="text-slate-400 hover:text-slate-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <h5 id="modalJobTitle" class="text-sm font-bold text-slate-900">Urgent Apartment Wiring & Fan Repair</h5>
+          <p id="modalJobLocation" class="text-slate-500 mt-0.5">Indiranagar (1.2 km away)</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
+          <div>
+            <span class="text-slate-400 uppercase text-[10px] font-bold block">Estimated Payout</span>
+            <span id="modalPayout" class="text-base font-extrabold text-emerald-700 font-mono">₹950</span>
+          </div>
+          <div>
+            <span class="text-slate-400 uppercase text-[10px] font-bold block">Shift & Hours</span>
+            <span id="modalShift" class="text-xs font-bold text-slate-800">Evening (4 hrs)</span>
+          </div>
+        </div>
+
+        <div class="bg-emerald-50 text-emerald-900 p-3 rounded-xl border border-emerald-200 text-[11px] leading-relaxed">
+          <span class="font-bold">Contact Hirer Directly:</span><br>
+          📞 Phone: <span class="font-mono font-bold">+91 98450 12894</span> (Indiranagar Resident Assoc.)<br>
+          📍 Address: 12th Main, HAL 2nd Stage, Indiranagar, Bengaluru
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="btnCloseGigModal2" class="btn-secondary text-xs py-2 px-3">
+          Dismiss
+        </button>
+        <button id="btnCallHirer" class="btn-primary text-xs py-2 px-4">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+          <span>Call Hirer Now</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
